@@ -1,9 +1,9 @@
 import Adafruit_BBIO.PWM as PWM
-import Adafruit_BBIO.GPIO as GPIO
-from subprocess import call
+import Adafruit_BBIO.GPIO as GPIO 
+from subprocess import call 
 import time
 #import datetime
-import os
+import os 
 import Adafruit_CharLCD as LCD
 from multiprocessing import Process
 import sys
@@ -29,16 +29,32 @@ lcd_rows    = 2
 a = 1
 
 # Initialize the LCD using the pins above.
-lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
+lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, 
 lcd_columns, lcd_rows, lcd_backlight)
 
 def speak(user_input):
     call(["flite", "-voice", "rms", "-t", user_input])
 
-def speak(user_input):
-    call(["flite", "-voice", "rms", "-t", user_input])
+def powerup():
+    PWM.set_duty_cycle("P9_14", 0)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 10)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 20)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 30)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 40)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 50)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 60)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 70)
+    time.sleep(0.02)
+    PWM.set_duty_cycle("P9_14", 80)
 
-# Print the starting messages
+# Print a two line message
 lcd.message('Debian Booted')
 speak('debian booted')
 
@@ -55,13 +71,12 @@ PWM.set_duty_cycle("P9_14", 30)
 time.sleep(0.2)
 PWM.set_duty_cycle("P9_14", 90)
 time.sleep(0.4)
-call(['aplay','Power_Up_Ray-Mike_Koenig-800933783.wav'])
+call(['aplay','PowerUp.wav'])
 PWM.set_duty_cycle("P9_14", 80)
 
 lcd.clear()
 
 lcd.message('Boot\nComplete!')
-
 speak('Power up complete')
 GPIO.setup("P9_11", GPIO.IN)
 debounce = 0
@@ -69,20 +84,25 @@ debounce = 0
 time.sleep(1)
 lcd.clear()
 
+
+
 #MAIN LOOP
 while a == 1:
 
+   # now = datetime.datetime.now()
+
+    #lcd.clear()
+    #lcd.message("Current Time:\n"+now.strftime("%H:%M")
+    
     b = GPIO.input("P9_11")
 
     if b == 1:
          if debounce == 0:
              PWM.set_duty_cycle("P9_14", 0)
-             call(['aplay','Cartoon-warp-01.wav'])
+             call(['aplay','GunFire.wav'])
              powerup()
              debounce = 1
          debounce = 0
-    else:
+    else: 
          PWM.set_duty_cycle("P9_14", 80)
-
-
 

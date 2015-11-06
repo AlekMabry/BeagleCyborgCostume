@@ -2,7 +2,6 @@ import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO 
 from subprocess import call 
 import time
-#import datetime
 import os 
 import Adafruit_CharLCD as LCD
 from multiprocessing import Process
@@ -35,34 +34,15 @@ lcd_columns, lcd_rows, lcd_backlight)
 def speak(user_input):
     call(["flite", "-voice", "rms", "-t", user_input])
 
-def powerup():
-    PWM.set_duty_cycle("P9_14", 0)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 10)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 20)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 30)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 40)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 50)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 60)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 70)
-    time.sleep(0.02)
-    PWM.set_duty_cycle("P9_14", 80)
-
 # Print a two line message
 lcd.message('Debian Booted')
-speak('debian booted')
+speak('Debian Booted')
 
 time.sleep(4.0)
 lcd.clear()
 
 lcd.message('Enabling\nBlaster...')
-speak('enabling blaster')
+speak('Enabling Blaster')
 time.sleep(2.0)
 
 PWM.set_duty_cycle("P9_14", 90)
@@ -77,7 +57,7 @@ PWM.set_duty_cycle("P9_14", 80)
 lcd.clear()
 
 lcd.message('Boot\nComplete!')
-speak('Power up complete')
+speak('Power Up Complete')
 GPIO.setup("P9_11", GPIO.IN)
 debounce = 0
 
@@ -89,18 +69,13 @@ lcd.clear()
 #MAIN LOOP
 while a == 1:
 
-   # now = datetime.datetime.now()
-
-    #lcd.clear()
-    #lcd.message("Current Time:\n"+now.strftime("%H:%M")
-    
     b = GPIO.input("P9_11")
 
     if b == 1:
          if debounce == 0:
              PWM.set_duty_cycle("P9_14", 0)
              call(['aplay','GunFire.wav'])
-             powerup()
+             PWM.set_duty_cycle("P9_14", 80)
              debounce = 1
          debounce = 0
     else: 
